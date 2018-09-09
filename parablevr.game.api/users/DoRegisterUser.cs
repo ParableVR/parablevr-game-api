@@ -29,7 +29,26 @@ namespace parablevr.game.api.users
       IMongoCollection<User> users = client.GetCollection<User>("users");
 
       // deserialise body input into class
-      string reqBody = await new StreamReader(req.Body).ReadToEndAsync();
+      string reqBody;
+      try
+      {
+        reqBody = await new StreamReader(req.Body).ReadToEndAsync();
+        if (String.IsNullOrEmpty(reqBody))
+        {
+          return new BadRequestObjectResult(new
+          {
+            message = "No request body supplied"
+          });
+        }
+      }
+      catch (Exception e)
+      {
+        return new BadRequestObjectResult(new
+        {
+          message = e.Message
+        });
+      }
+      
       User registrant = JsonConvert.DeserializeObject<User>(reqBody);
 
       // valid input
