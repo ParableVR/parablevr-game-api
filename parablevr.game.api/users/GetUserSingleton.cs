@@ -17,7 +17,7 @@ using parablevr.game.api.utilities;
 
 namespace parablevr.game.api.users
 {
-  public static class GetUser
+  public static class GetUserSingleton
   {
     [FunctionName("getUserByID")]
     public static async Task<IActionResult> GetUserByIDAsync(
@@ -46,7 +46,6 @@ namespace parablevr.game.api.users
         user = userResults.First()
       });
     }
-
 
     [FunctionName("getUserByUsername")]
     public static async Task<IActionResult> GetUserByUsernameAsync(
