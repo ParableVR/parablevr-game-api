@@ -26,7 +26,7 @@ namespace parablevr.game.api.users
     {
       // set up connection
       DataClient client = new DataClient();
-      IMongoCollection<User> users = (IMongoCollection<User>)client.GetCollection<User>("users");
+      IMongoCollection<User> users = client.GetCollection<User>("users");
 
       // deserialise body input into class
       string reqBody = await new StreamReader(req.Body).ReadToEndAsync();
