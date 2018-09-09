@@ -1,33 +1,78 @@
 using System;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.WebJobs.Host;
-using Newtonsoft.Json;
 using Microsoft.Extensions.Logging;
+using MongoDB.Driver;
+using Newtonsoft.Json;
+using parablevr.game.api.objects;
+using parablevr.game.api.utilities;
 
 namespace parablevr.game.api.users
 {
   public static class DoRegisterUser
   {
-    [FunctionName("DoRegisterUser")]
-    public static IActionResult DoRegisterUserAsync(
+    [FunctionName("doRegisterUser")]
+    public static async Task<IActionResult> DoRegisterUserAsync(
       [HttpTrigger(AuthorizationLevel.Function, "post", Route = "users/do/register")]HttpRequest req,
       ILogger log)
     {
-      log.LogInformation("C# HTTP trigger function processed a request.");
+      // set up connection
+      DataClient client = new DataClient();
+      IMongoCollection<User> users = (IMongoCollection<User>)client.GetCollection<User>("users");
 
-      string name = req.Query["name"];
+      // deserialise body input into class
+      string reqBody = await new StreamReader(req.Body).ReadToEndAsync();
+      User registrant = JsonConvert.DeserializeObject<User>(reqBody);
 
-      string requestBody = new StreamReader(req.Body).ReadToEnd();
-      dynamic data = JsonConvert.DeserializeObject(requestBody);
-      name = name ?? data?.name;
+      // valid input
+      bool input_valid = true;
+      if (String.IsNullOrEmpty(registrant.name_user)) input_valid = false;
+      if (String.IsNullOrEmpty(registrant.name_given)) input_valid = false;
+      if (String.IsNullOrEmpty(registrant.name_family)) input_valid = false;
 
-      return name != null
-          ? (ActionResult)new OkObjectResult($"Hello, {name}")
-          : new BadRequestObjectResult("Please pass a name on the query string or in the request body");
+      // put the pins in if invalid input
+      if (!input_valid)
+      {
+        return new BadRequestObjectResult(new
+        {
+          message = "Invalid input"
+        });
+      }
+
+      // filter non-alphanumeric characters
+      Regex alphanum = new Regex("[^a-zA-Z0-9 -]");
+      registrant.name_user = alphanum.Replace(registrant.name_user, "");
+      registrant.name_given = alphanum.Replace(registrant.name_given, "");
+      registrant.name_family = alphanum.Replace(registrant.name_family, "");
+
+      registrant.when_created = DateTime.Now;
+      registrant.when_deleted = null;
+
+      // check username doesn't already exist
+      if (await users.CountDocumentsAsync(x =>
+        x.name_user == registrant.name_user && !x.when_deleted.HasValue) > 0)
+      {
+        return new BadRequestObjectResult(new
+        {
+          message = "Username already exists"
+        });
+      }
+
+      await users.InsertOneAsync(registrant);
+
+      return new OkObjectResult(new
+      {
+        message = "Successfully registered user",
+        user = registrant
+      });
     }
   }
 }
