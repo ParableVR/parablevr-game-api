@@ -8,16 +8,14 @@ namespace parablevr.game.api.objects
   public class User
   {
     [BsonId]
-    public ObjectId id { get; set; }
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string id { get; set; }
     public string name_user { get; set; }
     public string name_given { get; set; }
     public string name_family { get; set; }
+    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     public DateTime when_created { get; set; }
+    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     public DateTime? when_deleted { get; set; }
-
-    public User()
-    {
-      this.id = ObjectId.GenerateNewId();
-    }
   }
 }
