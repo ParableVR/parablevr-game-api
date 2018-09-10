@@ -72,7 +72,7 @@ namespace parablevr.game.api.users
       registrant.name_given = alphanum.Replace(registrant.name_given, "");
       registrant.name_family = alphanum.Replace(registrant.name_family, "");
 
-      registrant.when_created = DateTime.Now;
+      registrant.when_created = DateTime.UtcNow;
       registrant.when_deleted = null;
 
       // check username doesn't already exist

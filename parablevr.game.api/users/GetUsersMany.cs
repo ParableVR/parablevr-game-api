@@ -51,7 +51,7 @@ namespace parablevr.game.api.users
 
       List<string> uidsRaw = JsonConvert.DeserializeObject<List<string>>(reqBody);
       List<string> uidsPoison = new List<string>();
-      List<ObjectId> uids = new List<ObjectId>();
+      List<string> uids = new List<string>();
 
       if (uidsRaw.Count == 0)
       {
@@ -66,7 +66,7 @@ namespace parablevr.game.api.users
       {
         try
         {
-          uids.Add(new ObjectId(id));
+          uids.Add(id);
         }
         catch
         {

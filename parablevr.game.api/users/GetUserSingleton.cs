@@ -30,7 +30,7 @@ namespace parablevr.game.api.users
       IMongoCollection<User> users = client.GetCollection<User>("users");
 
       List<User> userResults = (await (await users.FindAsync(
-        x => x.id == new MongoDB.Bson.ObjectId(uid) && x.when_deleted == null)).ToListAsync());
+        x => x.id == uid && x.when_deleted == null)).ToListAsync());
 
       if (userResults.Count == 0)
       {
