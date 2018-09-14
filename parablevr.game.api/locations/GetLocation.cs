@@ -20,7 +20,7 @@ namespace parablevr.game.api.users
   public static class GetLocation
   {
     [FunctionName("getLocationByID")]
-    public static async Task<IActionResult> GetUserByIDAsync(
+    public static async Task<IActionResult> GetLocationByIDAsync(
       [HttpTrigger(AuthorizationLevel.Function, "get", Route = "locations/get/location/id/{lid}")]HttpRequest req,
       string lid,
       ILogger log)
