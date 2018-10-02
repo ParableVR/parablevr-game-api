@@ -18,6 +18,9 @@ namespace parablevr.game.api.objects
     public double yaw { get; set; }
     public double pitch { get; set; }
     public double roll { get; set; }
+    public double scale_x { get; set; }
+    public double scale_y { get; set; }
+    public double scale_z { get; set; }
     public bool significant { get; set; }
   }
 }
