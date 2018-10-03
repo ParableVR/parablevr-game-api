@@ -35,7 +35,7 @@ namespace parablevr.game.api.sessions
       try
       {
         reqBody = await new StreamReader(req.Body).ReadToEndAsync();
-        if (String.IsNullOrEmpty(reqBody))
+        if (string.IsNullOrEmpty(reqBody))
         {
           return new BadRequestObjectResult(new
           {
@@ -55,10 +55,10 @@ namespace parablevr.game.api.sessions
 
       // valid input
       bool input_valid = true;
-      if (String.IsNullOrEmpty(session.name)) input_valid = false;
-      if (String.IsNullOrEmpty(session.scenario)) input_valid = false;
+      if (string.IsNullOrEmpty(session.name)) input_valid = false;
+      if (string.IsNullOrEmpty(session.scenario)) input_valid = false;
       if (session.people.Count < 1) input_valid = false;
-      else if (String.IsNullOrEmpty(session.people.First().user)) input_valid = false;
+      else if (string.IsNullOrEmpty(session.people.First().user)) input_valid = false;
 
       // put the pins in if invalid input
       if (!input_valid)

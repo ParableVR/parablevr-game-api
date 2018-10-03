@@ -33,7 +33,7 @@ namespace parablevr.game.api.users
       try
       {
         reqBody = await new StreamReader(req.Body).ReadToEndAsync();
-        if (String.IsNullOrEmpty(reqBody))
+        if (string.IsNullOrEmpty(reqBody))
         {
           return new BadRequestObjectResult(new
           {
@@ -111,7 +111,7 @@ namespace parablevr.game.api.users
       try
       {
         reqBody = await new StreamReader(req.Body).ReadToEndAsync();
-        if (String.IsNullOrEmpty(reqBody))
+        if (string.IsNullOrEmpty(reqBody))
         {
           return new BadRequestObjectResult(new
           {
