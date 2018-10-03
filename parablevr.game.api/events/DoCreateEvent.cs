@@ -18,11 +18,12 @@ using parablevr.game.api.utilities;
 
 namespace parablevr.game.api.sessions
 {
-    public static class DoCreateEventSession
+    public static class DoCreateEvent
     {
-        [FunctionName("doCreateEventSession")]
-        public static async Task<IActionResult> DoCreateEventSessionAsync(
-          [HttpTrigger(AuthorizationLevel.Function, "post", Route = "events/do/create/session")]HttpRequest req,
+        [FunctionName("doCreateEvent")]
+        public static async Task<IActionResult> DoCreateEventAsync(
+          [HttpTrigger(AuthorizationLevel.Function, "post", Route = "events/do/create/{eventSession}")]HttpRequest req,
+          string eventSession,
           ILogger log)
         {
             // set up connection
@@ -31,7 +32,7 @@ namespace parablevr.game.api.sessions
 
             // deserialise body input into class
             string reqBody;
-            Event eventSession;
+            EventObject @event;
             try
             {
                 reqBody = await new StreamReader(req.Body).ReadToEndAsync();
@@ -43,7 +44,7 @@ namespace parablevr.game.api.sessions
                     });
                 }
 
-                eventSession = JsonConvert.DeserializeObject<Event>(reqBody);
+                @event = JsonConvert.DeserializeObject<EventObject>(reqBody);
             }
             catch (Exception e)
             {
@@ -55,8 +56,15 @@ namespace parablevr.game.api.sessions
 
             // valid input
             bool input_valid = true;
-            if (string.IsNullOrEmpty(eventSession.session)) input_valid = false;
-            //if (eventSession.events.Count > 0) input_valid = false; // do not allow specifying events here
+            if (string.IsNullOrEmpty(eventSession))
+            {
+                input_valid = false;
+            }
+
+            if (@event.type != "interaction" || @event.type != "perception" || @event.type != "reaction")
+            {
+                input_valid = false;
+            }
 
             // put the pins in if invalid input
             if (!input_valid)
@@ -67,15 +75,28 @@ namespace parablevr.game.api.sessions
                 });
             }
 
-            eventSession.when_started = DateTime.UtcNow;
-            eventSession.when_deleted = null;
+            @event.when_occured = DateTime.UtcNow;
 
-            await events.InsertOneAsync(eventSession);
+            FilterDefinition<Event> filter = Builders<Event>
+              .Filter.Eq(x => x.session, eventSession);
+            UpdateDefinition<Event> update = Builders<Event>.Update
+              .Push<EventObject>(x => x.events, new EventObject()
+              {
+                  type = @event.type.ToLower(),
+                  user = null,
+                  when_occured = DateTime.UtcNow,
+                  contact_duration = @event.contact_duration,
+                  result = @event.result,
+                  object_coordinator = @event.object_coordinator,
+                  objects_involved = @event.objects_involved
+              });
+
+            await events.FindOneAndUpdateAsync(filter, update);
 
             return new OkObjectResult(new
             {
-                message = "Successfully created an event session",
-                event_session = eventSession
+                message = "Successfully created an event",
+                @event
             });
         }
     }
