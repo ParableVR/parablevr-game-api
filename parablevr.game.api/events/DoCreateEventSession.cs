@@ -16,7 +16,7 @@ using Newtonsoft.Json;
 using parablevr.game.api.objects;
 using parablevr.game.api.utilities;
 
-namespace parablevr.game.api.sessions
+namespace parablevr.game.api.events
 {
   public static class DoCreateEventSession
   {
