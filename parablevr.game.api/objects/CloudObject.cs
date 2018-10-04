@@ -5,7 +5,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace parablevr.game.api.objects
 {
-  public class Object
+  public class CloudObject
   {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]

@@ -31,6 +31,6 @@ namespace parablevr.game.api.objects
     public string linked_prev_scenario { get; set; }
     [BsonRepresentation(BsonType.ObjectId)]
     public string linked_next_scenario { get; set; }
-    public List<Object> objects { get; set; }
+    public List<CloudObject> objects { get; set; }
   }
 }
