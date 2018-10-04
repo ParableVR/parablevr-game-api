@@ -43,21 +43,22 @@ namespace parablevr.game.api.events
       eventSession = JsonConvert.DeserializeObject<Event>(reqBody);
 
       // valid input
-      //bool input_valid = true;
-      //if (string.IsNullOrEmpty(eventSession.session)) input_valid = false;
-      //if (eventSession.events.Count > 0) input_valid = false; // do not allow specifying events here
+      bool input_valid = true;
+      if (string.IsNullOrEmpty(eventSession.session)) input_valid = false;
+      // if (eventSession.events.Count > 0) input_valid = false; // do not allow specifying events here
 
       // put the pins in if invalid input
-      // if (!input_valid)
-      // {
-      //   return new BadRequestObjectResult(new
-      //   {
-      //     message = "Invalid input"
-      //   });
-      // }
+      if (!input_valid)
+      {
+        return new BadRequestObjectResult(new
+        {
+          message = "Invalid input"
+        });
+      }
 
       eventSession.when_started = DateTime.UtcNow;
       eventSession.when_deleted = null;
+      eventSession.events = null;
 
       await events.InsertOneAsync(eventSession);
 
