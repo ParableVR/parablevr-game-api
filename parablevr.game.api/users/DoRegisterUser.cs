@@ -21,7 +21,7 @@ namespace parablevr.game.api.users
   {
     [FunctionName("doRegisterUser")]
     public static async Task<IActionResult> DoRegisterUserAsync(
-      [HttpTrigger(AuthorizationLevel.Function, "post", Route = "users/do/register")]HttpRequest req,
+      [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "users/do/register")]HttpRequest req,
       ILogger log)
     {
       // set up connection

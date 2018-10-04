@@ -21,7 +21,7 @@ namespace parablevr.game.api.locations
   {
     [FunctionName("getScenarioByID")]
     public static async Task<IActionResult> GetScenarioByIDAsync(
-      [HttpTrigger(AuthorizationLevel.Function, "get", Route = "locations/get/scenario/id/{sid}")]HttpRequest req,
+      [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "locations/get/scenario/id/{sid}")]HttpRequest req,
       string sid,
       ILogger log)
     {
