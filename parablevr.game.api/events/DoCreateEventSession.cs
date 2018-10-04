@@ -58,7 +58,7 @@ namespace parablevr.game.api.events
 
       eventSession.when_started = DateTime.UtcNow;
       eventSession.when_deleted = null;
-      eventSession.events = null;
+      eventSession.events = new List<EventObject>();
 
       await events.InsertOneAsync(eventSession);
 
