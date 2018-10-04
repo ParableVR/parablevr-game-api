@@ -22,7 +22,7 @@ namespace parablevr.game.api.users
   {
     [FunctionName("getUsersManyByID")]
     public static async Task<IActionResult> GetUsersByIDAsync(
-      [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "users/get/users/id")]HttpRequest req,
+      [HttpTrigger(AuthorizationLevel.Function, "post", Route = "users/get/users/id")]HttpRequest req,
       ILogger log)
     {
       // set up connection
@@ -100,7 +100,7 @@ namespace parablevr.game.api.users
 
     [FunctionName("getUsersManyByUsername")]
     public static async Task<IActionResult> GetUsersByUsernameAsync(
-      [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "users/get/users/username")]HttpRequest req,
+      [HttpTrigger(AuthorizationLevel.Function, "post", Route = "users/get/users/username")]HttpRequest req,
       ILogger log)
     {
       // set up connection

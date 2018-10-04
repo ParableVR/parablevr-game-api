@@ -21,7 +21,7 @@ namespace parablevr.game.api.locations
   {
     [FunctionName("getLocationList")]
     public static async Task<IActionResult> GetLocationListAsync(
-      [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "locations/get/location/list")]HttpRequest req,
+      [HttpTrigger(AuthorizationLevel.Function, "get", Route = "locations/get/location/list")]HttpRequest req,
       ILogger log)
     {
       // set up connection

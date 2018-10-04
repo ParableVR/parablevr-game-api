@@ -21,7 +21,7 @@ namespace parablevr.game.api.users
   {
     [FunctionName("getUserByID")]
     public static async Task<IActionResult> GetUserByIDAsync(
-      [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "users/get/user/id/{uid}")]HttpRequest req,
+      [HttpTrigger(AuthorizationLevel.Function, "get", Route = "users/get/user/id/{uid}")]HttpRequest req,
       string uid,
       ILogger log)
     {
@@ -49,7 +49,7 @@ namespace parablevr.game.api.users
 
     [FunctionName("getUserByUsername")]
     public static async Task<IActionResult> GetUserByUsernameAsync(
-      [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "users/get/user/username/{username}")]HttpRequest req,
+      [HttpTrigger(AuthorizationLevel.Function, "get", Route = "users/get/user/username/{username}")]HttpRequest req,
       string username,
       ILogger log)
     {

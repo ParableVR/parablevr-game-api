@@ -22,7 +22,7 @@ namespace parablevr.game.api.events
   {
     [FunctionName("doCreateEventSession")]
     public static async Task<IActionResult> DoCreateEventSessionAsync(
-      [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "events/do/create/session")]HttpRequest req,
+      [HttpTrigger(AuthorizationLevel.Function, "post", Route = "events/do/create/session")]HttpRequest req,
       ILogger log)
     {
       // set up connection
