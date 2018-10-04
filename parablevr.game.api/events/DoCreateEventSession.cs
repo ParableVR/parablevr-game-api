@@ -30,28 +30,17 @@ namespace parablevr.game.api.sessions
       IMongoCollection<Event> events = client.GetCollection<Event>("events");
 
       // deserialise body input into class
-      string reqBody;
       Event eventSession;
-      try
-      {
-        reqBody = await new StreamReader(req.Body).ReadToEndAsync();
-        if (string.IsNullOrEmpty(reqBody))
-        {
-          return new BadRequestObjectResult(new
-          {
-            message = "No request body supplied"
-          });
-        }
-
-        eventSession = JsonConvert.DeserializeObject<Event>(reqBody);
-      }
-      catch (Exception e)
+      string reqBody = await new StreamReader(req.Body).ReadToEndAsync();
+      if (string.IsNullOrEmpty(reqBody))
       {
         return new BadRequestObjectResult(new
         {
-          message = e.Message
+          message = "No request body supplied"
         });
       }
+
+      eventSession = JsonConvert.DeserializeObject<Event>(reqBody);
 
       // valid input
       //bool input_valid = true;
