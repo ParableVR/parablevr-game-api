@@ -61,7 +61,7 @@ namespace parablevr.game.api.sessions
         input_valid = false;
       }
 
-      if (!(@event.type == "interaction" || @event.type == "perception" || @event.type == "reaction"))
+      if (!(@event.type == "transform" || @event.type == "perception" || @event.type == "reaction"))
       {
         input_valid = false;
       }
